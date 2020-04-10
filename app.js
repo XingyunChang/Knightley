@@ -21,6 +21,8 @@ var methodOverride = require('method-override');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var linkedinAuth = require('./routes/linkedinAuth');
+var googleAuth = require('./routes/googleAuth');
+
 
 
 var app = express();
@@ -54,6 +56,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/link', linkedinAuth); //short version of linkedin for testing purposes
+app.use('/google', googleAuth);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
