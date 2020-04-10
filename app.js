@@ -53,7 +53,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //routes 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/link', linkedinAuth);
+app.use('/link', linkedinAuth); //short version of linkedin for testing purposes
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
