@@ -1,7 +1,13 @@
+//imports passport and passport linkedin oath2 for linkedin authentication
 var passport = require('passport');
+var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+
+//imports express and router to set up routes for site
 var express = require('express');
 var router = express.Router();
-var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+
+//imports config page
+//allows us to store API and and Secret Key elsewhere
 var config = require('./../_config');
 
 /* GET home page. */

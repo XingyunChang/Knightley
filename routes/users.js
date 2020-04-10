@@ -1,3 +1,5 @@
+//imports the express module
+//creates router variable so we can create routes for our site
 var express = require('express');
 var router = express.Router();
 
