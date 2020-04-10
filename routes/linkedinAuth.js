@@ -1,3 +1,6 @@
+
+//RESET LINKEDIN API AND SECRET KEY before end of project. 
+
 //imports passport and passport linkedin oath2 for linkedin authentication
 var passport = require('passport');
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;

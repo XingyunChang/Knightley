@@ -17,6 +17,10 @@ var methodOverride = require('method-override');
 
 
 
+var favicon = require('serve-favicon');
+const helmet = require('helmet');
+
+
 //file locations for various routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -30,8 +34,11 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(helmet());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -75,5 +82,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+app.listen(process.env.PORT || 3000, () => console.log('Example app listening on port 3001!'));
 
 module.exports = app;
