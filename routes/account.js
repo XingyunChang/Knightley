@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-router.get('/account', ensureAuthenticated, function(req, res){
+router.get('/', ensureAuthenticated, function(req, res){
     res.json("account page");
     //res.render('account', { user: req.user });
   });
