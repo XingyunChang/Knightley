@@ -5,9 +5,6 @@
 var passport = require('passport');
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 
-//imports express and router to set up routes for site
-var express = require('express');
-var router = express.Router();
 
 //imports config page and init to serialize/deseralize passport
 //allows us to store API and and Secret Key elsewhere

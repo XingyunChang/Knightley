@@ -5,8 +5,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 //imports the express module and
 //creates router variable so we can create routes for our site
-var express = require('express');
-var router = express.Router();
+
 
 //imports config page and init to serialize/deseralize passport
 //allows us to store API and and Secret Key elsewhere
@@ -29,7 +28,7 @@ passport.use(new GoogleStrategy({
   }
 ));
 
-  //serialize user into session
-  init();
+//serialize user into session
+init();
 
 module.exports = passport;

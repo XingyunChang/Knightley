@@ -1,6 +1,7 @@
 var express = require('express');
 var passportLinkedin = require('../auth/linkedin');
 var passportGoogle = require('../auth/google');
+var passportFacebook = require('../auth/facebook');
 var router = express.Router();
 
 const mysqlDb = require('./../mysqlConn')
@@ -123,6 +124,13 @@ passportGoogle.authenticate('google', { failureRedirect: '/' }),
 		res.redirect('/account');
 	});
 
+router.get('/auth/facebook', passportFacebook.authenticate('facebook'));
+
+router.get('/auth/facebook/callback', 
+	passportFacebook.authenticate('facebook', { failureRedirect: '/' }),
+	function(req, res) {
+		res.redirect('/account');
+	});
 
 
 // router.post('/auth', function(req, res, next) {
