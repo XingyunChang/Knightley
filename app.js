@@ -22,10 +22,9 @@ const helmet = require('helmet');
 
 
 //file locations for various routes
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var linkedinAuth = require('./routes/linkedinAuth');
-var googleAuth = require('./routes/googleAuth');
+var index = require('./routes/index');
+var users = require('./routes/users');
+var account = require('./routes/account');
 
 
 
@@ -60,10 +59,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //routes 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/link', linkedinAuth); //short version of linkedin for testing purposes
-app.use('/google', googleAuth);
+app.use('/', index);
+app.use('/users', users);
+app.use('account', account);
 
 
 // catch 404 and forward to error handler

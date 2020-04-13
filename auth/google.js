@@ -8,27 +8,10 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var express = require('express');
 var router = express.Router();
 
-//imports config page
+//imports config page and init to serialize/deseralize passport
 //allows us to store API and and Secret Key elsewhere
-var config = require('./../_config');
-
-/* GET home page. */
-router.get('/', (req, res, next) => {
-  //res.render('index', { title: 'Express' });
-  res.json("Google");
-});
-
-
-router.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile'] }));
-
-
-router.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
+var config = require('../_config');
+var init = require('./init');
 
 
 //creates a new passport stratagey to authenticate users
@@ -46,4 +29,7 @@ passport.use(new GoogleStrategy({
   }
 ));
 
-module.exports = router;
+  //serialize user into session
+  init();
+
+module.exports = passport;
