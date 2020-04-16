@@ -13,8 +13,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/create', function(req, res, next) {
-		res.render('create_account');	
-	
+		res.render('create_account');
 	});
 
 router.post('/creating', function(req, res, next) {
@@ -46,55 +45,31 @@ router.get('/confirm', function(req, res, next) {
 });
 
 router.get('/select', function(req, res, next) {
-	// var username = req.body.username;
+	var username = req.body.username;
 	// var password = req.body.password;
 	mysqlDb.query('SELECT * FROM templates AS id', function(error, results, fields) {
-		// template0 = results[0].id;
-		// template1 = results[1];
-		// template2 = results[2];
-		
-		templates = {}
-		// templates_array = JSON.stringify(results)
-		// console.log(templates_array)
-		// for (var i = 0; i < templates_array ; i++) {
-		// 	console.log(templates_array[i])
-		// 	templates[i] = templates_array[i]
-		// }
-		
-		
-		Object.keys(results).forEach(function(key) {
-			var row = results[key];
-			templates[row.id] = row;
-		});
-		
-		// var one = '1'
-		// templates = {
-			
-		// }
-		
-		// var objs = [];
-		// for (var i = 0;i < results.length; i++) {
-		// 	objs.push({username: rows[i].username});
-		// }
-		// connection.end();
-		
-		// res.send(results);
-		
-		// res.send(templates)
-		
-		res.render('show', thisone = templates)
+		obj = {print: results, username: username}
+		res.render('show', obj)
 	})
-	// res.render('index', {title: req.cookies.name});
-
-
 });
 
+router.get('/select/:id', function(req, res, next) {
+	var temp_id = req.params.id;
+	mysqlDb.query('SELECT * FROM templates WHERE id=?', [temp_id], function(error, results, fields) {
+		// obj = {print: results}
+		res.json(results)
+		// res.render('single', obj)
+	})
+	
+})
+
+// Router for Debug Only
 router.get('/checking', function(req, res, next) {
 	// var username = req.body.username;
 	// var password = req.body.password;
 	mysqlDb.query('SELECT * FROM users', function(error, results, fields) {
+		console.log(results)
 		res.send(results);
-		
 	})
 
 });
