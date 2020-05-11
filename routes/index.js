@@ -9,12 +9,30 @@ const mysqlDb = require('./../mysqlConn')
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	// console.log(mysqlDb.query('SELECT * FROM templates'))
-	res.render('login');
+	res.render('login', {title:''});
 });
 
+router.post('/auth', function(req, res , next) {
+	var username = req.body.username;
+	var password = req.body.password;
+
+	mysqlDb.query('SELECT * FROM users WHERE username = ? and password = ?', [username, password] ,function(error, results, fields) {
+		if (results.length > 0) {
+			// res.send('Correct!');
+			res.json(results);
+
+			// res.redirect('/somewhere');
+		}	else {
+			res.render('login', {title:'Incorrect Username and/or Password!'});
+		}		
+		console.log('success')
+	});
+})
+
+
+
 router.get('/create', function(req, res, next) {
-		res.render('create_account');	
-	
+		res.render('create_account', {message:''});
 	});
 
 router.post('/creating', function(req, res, next) {
@@ -25,15 +43,22 @@ router.post('/creating', function(req, res, next) {
 		console.log(username);
 		console.log(password);
 		
-		mysqlDb.query('INSERT INTO users (username, password, profession) VALUES (?,?,?) ', [username, password, profession] ,function(error, results, fields) {
-			console.log('success')
+		mysqlDb.query('SELECT * FROM users WHERE username = ?', [username] ,function(error, results, fields) {
+			if (results.length > 0) {
+				res.send('Sorry, username is taken');
+				// res.redirect('create_account', {message:'Sorry, username is taken'});
+				res.end();
+			} else {
+				mysqlDb.query('INSERT INTO users (username, password, profession) VALUES (?,?,?) ', [username, password, profession] ,function(error, results, fields) {
+					console.log('success')
+				});
+				
+				res.cookie('name', username);
+				console.log("======Cookie======");
+				console.log(req.cookies.name)
+				res.redirect('/select');
+			}
 		});
-		
-	
-		res.cookie('name', username);
-		console.log("======Cookie======");
-		console.log(req.cookies.name)
-		res.redirect('/select');
 	
 	});
 
@@ -46,55 +71,31 @@ router.get('/confirm', function(req, res, next) {
 });
 
 router.get('/select', function(req, res, next) {
-	// var username = req.body.username;
+	var username = req.body.username;
 	// var password = req.body.password;
 	mysqlDb.query('SELECT * FROM templates AS id', function(error, results, fields) {
-		// template0 = results[0].id;
-		// template1 = results[1];
-		// template2 = results[2];
-		
-		templates = {}
-		// templates_array = JSON.stringify(results)
-		// console.log(templates_array)
-		// for (var i = 0; i < templates_array ; i++) {
-		// 	console.log(templates_array[i])
-		// 	templates[i] = templates_array[i]
-		// }
-		
-		
-		Object.keys(results).forEach(function(key) {
-			var row = results[key];
-			templates[row.id] = row;
-		});
-		
-		// var one = '1'
-		// templates = {
-			
-		// }
-		
-		// var objs = [];
-		// for (var i = 0;i < results.length; i++) {
-		// 	objs.push({username: rows[i].username});
-		// }
-		// connection.end();
-		
-		// res.send(results);
-		
-		// res.send(templates)
-		
-		res.render('show', thisone = templates)
+		obj = {print: results, username: username}
+		res.render('show', obj)
 	})
-	// res.render('index', {title: req.cookies.name});
-
-
 });
 
+router.get('/select/:id', function(req, res, next) {
+	var temp_id = req.params.id;
+	mysqlDb.query('SELECT * FROM templates WHERE id=?', [temp_id], function(error, results, fields) {
+		// obj = {print: results}
+		res.json(results)
+		// res.render('single', obj)
+	})
+	
+})
+
+// Router for Debug Only
 router.get('/checking', function(req, res, next) {
 	// var username = req.body.username;
 	// var password = req.body.password;
 	mysqlDb.query('SELECT * FROM users', function(error, results, fields) {
+		console.log(results)
 		res.send(results);
-		
 	})
 
 });
@@ -107,11 +108,16 @@ router.get('/auth/linkedin', passportLinkedin.authenticate('linkedin'),);
 //	Passport authenticates users via linkedin. If authentication fails, user
 //	will be directed to login page. Otherwise, it will direct user to login page.
 router.get('/auth/linkedin/callback',
-  passportLinkedin.authenticate('linkedin', { failureRedirect: '/' }),
+  passportLinkedin.authenticate('linkedin', { failureRedirect: '/failure' }),
   function(req, res) {
     res.redirect('/account');
   });
 
+//test failure page
+router.get('/failure', function(req, res, next) {
+	// console.log(mysqlDb.query('SELECT * FROM templates'))
+	res.json('Failure Page');
+});
 
 //	 Request directed to google for authentication. 
 router.get('/auth/google', passportGoogle.authenticate('google', { scope: ['profile'] }));
@@ -119,7 +125,7 @@ router.get('/auth/google', passportGoogle.authenticate('google', { scope: ['prof
 //	Controls redirect after authentication. Succesfull requests go to account page
 //	unsuccessful requests go to login page
 router.get('/auth/google/callback', 
-passportGoogle.authenticate('google', { failureRedirect: '/' }),
+passportGoogle.authenticate('google', { failureRedirect: '/failure' }),
 	function(req, res) {
 		res.redirect('/account');
 	});
@@ -132,12 +138,5 @@ router.get('/auth/facebook/callback',
 		res.redirect('/account');
 	});
 
-
-// router.post('/auth', function(req, res, next) {
-// 	var username = req.body.username;
-// 	var password = req.body.password;
-	
-	
-// });
 
 module.exports = router;

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>templates</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body align="center">
+    <h1></h1>
+    <p><b>Hey, <%= username %>, Choose a Template</b></p>
+    <a href=/logout>logout</a>
+
+    <form>
+      <% print.forEach(function (templates) { %>
+      <p>  
+          <td><b>Template#: </b> <%= templates.id %></td>
+          <br>
+          <td><b>Title: </b> <%= templates.chart_title %></td>
+          <br>
+          <img src="<%= templates.chart_url %>" alt="Trulli" width="500" height="333">
+          <br>
+          <td><b>Description: </b><%= templates.description%></td>
+      </p>
+      <input type="submit">
+    </form>                                 
+    <% }) %>
+
+
+  </body>
+</html>
