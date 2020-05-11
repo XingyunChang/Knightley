@@ -1,8 +1,9 @@
 const mysql = require('mysql');
 const pool = mysql.createConnection({
-	host     : 'localhost',
-	user     : 'root',
-	password : 'password',
+	host     : '52.14.216.107',
+	port	 : '3306',
+	user     : 'helloworld',
+	password : 'helloworld',
 	database : 'likeness'
 });
 
@@ -11,7 +12,9 @@ module.exports = {
 		return pool.query(queryText, params, callback);
 	}
 }
-// pool.query('SELECT created_at FROM templates AS solution', function(error, results, fields){
+
+// // Sanity Check
+// pool.query('SELECT 1+1 AS solution', function(error, results, fields){
 // 	if (error) throw error;
-// 	console.log('The solution is: ', results[0]);
+// 	console.log('The solution is: ', results[0].solution);
 // })
