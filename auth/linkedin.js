@@ -11,20 +11,30 @@ var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 var config = require('../_config');
 var init = require('./init');
 
+const mysqlDb = require('./../mysqlConn')
+
   
 passport.use(new LinkedInStrategy({
   clientID: config.linkedin.clientID,
   clientSecret: config.linkedin.clientSecret,
   callbackURL: config.linkedin.callbackURL,
-  scope: ['r_emailaddress', 'r_liteprofile'],
-  state: true
+  scope: 'r_liteprofile',
   }, function(accessToken, refreshToken, profile, done) {
+    console.log(profile.firstName);
     // asynchronous verification, for effect...
     process.nextTick(function () {
-      // To keep the example simple, the user's LinkedIn profile is returned to
-      // represent the logged-in user. In a typical application, you would want
-      // to associate the LinkedIn account with a user record in your database,
-      // and return that user instead.
+      var username = profile.displayName
+      var password = profile.provider;
+      var profession = "null";
+
+      //need to check to see if user is already in the databse.
+      //if so, just return user profile, else insert user into database and
+      //return profile
+
+      //works for case where we have a new user
+      mysqlDb.query('INSERT INTO users (username, password, profession) VALUES (?,?,?) ', [username, password, profession] ,function(error, results, fields) {
+      });
+
       return done(null, profile);
     });
   }));
