@@ -7,17 +7,18 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('../_config');
 var init = require('./init');
 
+var enterUser = require("./enterUser");
+
+
 passport.use(new FacebookStrategy({
     clientID: config.facebook.clientID,
     clientSecret: config.facebook.clientSecret,
     callbackURL: config.google.callbackURL
   },
   function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  }
-));
+    enterUser(profile);
+    return cb(null, profile);
+  }));
 
 
 //serialize user into session

@@ -12,6 +12,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var config = require('../_config');
 var init = require('./init');
 
+var enterUser = require("./enterUser");
 
 //creates a new passport stratagey to authenticate users
 //holds API Key, holds client secret, and callback link
@@ -22,10 +23,8 @@ passport.use(new GoogleStrategy({
     callbackURL: config.google.callbackURL
   },
   function(accessToken, refreshToken, profile, cb) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
+      enterUser(profile);
       return cb(null, profile);
-    });
   }));
 
 //serialize user into session

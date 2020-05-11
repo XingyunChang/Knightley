@@ -7,11 +7,13 @@ const pool = mysql.createConnection({
 	database : 'likeness'
 });
 
+
 module.exports = {
 	query: (queryText,params,callback)=>{
 		return pool.query(queryText, params, callback);
 	}
 }
+
 
 // // Sanity Check
 // pool.query('SELECT 1+1 AS solution', function(error, results, fields){
