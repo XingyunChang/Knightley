@@ -12,6 +12,8 @@ router.get('/', function(req, res, next) {
 	res.render('login');
 });
 
+
+
 router.get('/create', function(req, res, next) {
 		res.render('create_account');
 	});
@@ -82,11 +84,16 @@ router.get('/auth/linkedin', passportLinkedin.authenticate('linkedin'),);
 //	Passport authenticates users via linkedin. If authentication fails, user
 //	will be directed to login page. Otherwise, it will direct user to login page.
 router.get('/auth/linkedin/callback',
-  passportLinkedin.authenticate('linkedin', { failureRedirect: '/' }),
+  passportLinkedin.authenticate('linkedin', { failureRedirect: '/failure' }),
   function(req, res) {
     res.redirect('/account');
   });
 
+//test failure page
+router.get('/failure', function(req, res, next) {
+	// console.log(mysqlDb.query('SELECT * FROM templates'))
+	res.json('Failure Page');
+});
 
 //	 Request directed to google for authentication. 
 router.get('/auth/google', passportGoogle.authenticate('google', { scope: ['profile'] }));
@@ -94,7 +101,7 @@ router.get('/auth/google', passportGoogle.authenticate('google', { scope: ['prof
 //	Controls redirect after authentication. Succesfull requests go to account page
 //	unsuccessful requests go to login page
 router.get('/auth/google/callback', 
-passportGoogle.authenticate('google', { failureRedirect: '/' }),
+passportGoogle.authenticate('google', { failureRedirect: '/failure' }),
 	function(req, res) {
 		res.redirect('/account');
 	});
