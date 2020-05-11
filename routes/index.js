@@ -9,13 +9,30 @@ const mysqlDb = require('./../mysqlConn')
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	// console.log(mysqlDb.query('SELECT * FROM templates'))
-	res.render('login');
+	res.render('login', {title:''});
 });
+
+router.post('/auth', function(req, res , next) {
+	var username = req.body.username;
+	var password = req.body.password;
+
+	mysqlDb.query('SELECT * FROM users WHERE username = ? and password = ?', [username, password] ,function(error, results, fields) {
+		if (results.length > 0) {
+			// res.send('Correct!');
+			res.json(results);
+
+			// res.redirect('/somewhere');
+		}	else {
+			res.render('login', {title:'Incorrect Username and/or Password!'});
+		}		
+		console.log('success')
+	});
+})
 
 
 
 router.get('/create', function(req, res, next) {
-		res.render('create_account');
+		res.render('create_account', {message:''});
 	});
 
 router.post('/creating', function(req, res, next) {
@@ -26,15 +43,22 @@ router.post('/creating', function(req, res, next) {
 		console.log(username);
 		console.log(password);
 		
-		mysqlDb.query('INSERT INTO users (username, password, profession) VALUES (?,?,?) ', [username, password, profession] ,function(error, results, fields) {
-			console.log('success')
+		mysqlDb.query('SELECT * FROM users WHERE username = ?', [username] ,function(error, results, fields) {
+			if (results.length > 0) {
+				res.send('Sorry, username is taken');
+				// res.redirect('create_account', {message:'Sorry, username is taken'});
+				res.end();
+			} else {
+				mysqlDb.query('INSERT INTO users (username, password, profession) VALUES (?,?,?) ', [username, password, profession] ,function(error, results, fields) {
+					console.log('success')
+				});
+				
+				res.cookie('name', username);
+				console.log("======Cookie======");
+				console.log(req.cookies.name)
+				res.redirect('/select');
+			}
 		});
-		
-	
-		res.cookie('name', username);
-		console.log("======Cookie======");
-		console.log(req.cookies.name)
-		res.redirect('/select');
 	
 	});
 
@@ -114,12 +138,5 @@ router.get('/auth/facebook/callback',
 		res.redirect('/account');
 	});
 
-
-// router.post('/auth', function(req, res, next) {
-// 	var username = req.body.username;
-// 	var password = req.body.password;
-	
-	
-// });
 
 module.exports = router;
