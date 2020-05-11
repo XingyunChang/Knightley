@@ -23,8 +23,7 @@ passport.use(new GoogleStrategy({
     callbackURL: config.google.callbackURL
   },
   function(accessToken, refreshToken, profile, cb) {
-      enterUser(profile);
-      return cb(null, profile);
+    return enterUser(profile, cb);
   }));
 
 //serialize user into session

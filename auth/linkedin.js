@@ -20,8 +20,7 @@ passport.use(new LinkedInStrategy({
   scope: 'r_liteprofile',
   }, 
   function(accessToken, refreshToken, profile, done) {
-    enterUser(profile);
-    return done(null, profile);
+    return enterUser(profile, done);
   }));
 
   //serialize user into session
