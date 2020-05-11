@@ -19,7 +19,7 @@ passport.use(new LinkedInStrategy({
   callbackURL: config.linkedin.callbackURL,
   scope: 'r_liteprofile',
   }, 
-  function(accessToken, refreshToken, profile, done) {
+  (accessToken, refreshToken, profile, done) => {
     return enterUser(profile, done);
   }));
 

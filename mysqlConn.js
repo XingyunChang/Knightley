@@ -7,12 +7,23 @@ const pool = mysql.createConnection({
 	database : 'likeness'
 });
 
+function query(queryText, params, callback) {
+	return pool.query(queryText, params, callback);
+}
 
 module.exports = {
 	query: (queryText,params,callback)=>{
 		return pool.query(queryText, params, callback);
+	},
+	insert: (username, password, profession) => {
+		return query('INSERT INTO users (username, password, profession) VALUES (?,?,?) ', 
+		[username, password, profession],
+		(error, results, fields) => {
+			 });
 	}
 }
+
+
 
 
 // // Sanity Check

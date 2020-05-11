@@ -3,13 +3,14 @@ var router = express.Router();
 
 const mysqlDb = require('./../mysqlConn');
 
-router.get('/', ensureAuthenticated, function(req, res) {
+router.get('/', ensureAuthenticated, (req, res) => {
     var username = req.user.displayName;
     var password = req.user.provider;
 
-
-    mysqlDb.query('SELECT * FROM users WHERE username = ? and password = ?', [username, password] ,function(error, results, fields) {
-      res.json(results);
+    mysqlDb.query('SELECT * FROM users WHERE username = ? and password = ?',
+     [username, password],
+     (error, results, fields) => {
+       res.json(results);
     });
 });
 

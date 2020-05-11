@@ -22,7 +22,7 @@ passport.use(new GoogleStrategy({
     clientSecret:  config.google.clientSecret,
     callbackURL: config.google.callbackURL
   },
-  function(accessToken, refreshToken, profile, cb) {
+  (accessToken, refreshToken, profile, cb) => {
     return enterUser(profile, cb);
   }));
 

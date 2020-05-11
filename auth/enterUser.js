@@ -1,13 +1,12 @@
 const mysqlDb = require('./../mysqlConn');
 
-module.exports = function(profile, cb) {
-    process.nextTick(function () {
+module.exports = (profile, cb) => {
+    process.nextTick(() => {
         var username = profile.displayName;
         var password = profile.provider;
         var profession = "null";
 
-        mysqlDb.query('INSERT INTO users (username, password, profession) VALUES (?,?,?) ', [username, password, profession] ,function(error, results, fields) {
-        });
+        mysqlDb.insert(username, password, profession);
 
         cb(null, profile);
         return profile;
