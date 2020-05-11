@@ -22,11 +22,11 @@ passport.use(new GoogleStrategy({
     callbackURL: config.google.callbackURL
   },
   function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      return cb(null, profile);
     });
-  }
-));
+  }));
 
 //serialize user into session
 init();
