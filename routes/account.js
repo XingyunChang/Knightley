@@ -1,9 +1,17 @@
 var express = require('express');
 var router = express.Router();
-router.get('/', ensureAuthenticated, function(req, res){
-    res.json("account page");
-    //res.render('account', { user: req.user });
-  });
+
+const mysqlDb = require('./../mysqlConn');
+
+router.get('/', ensureAuthenticated, function(req, res) {
+    var username = req.user.displayName;
+    var password = req.user.provider;
+
+
+    mysqlDb.query('SELECT * FROM users WHERE username = ? and password = ?', [username, password] ,function(error, results, fields) {
+      res.json(results);
+    });
+});
 
 
 // Simple route middleware to ensure user is authenticated.
