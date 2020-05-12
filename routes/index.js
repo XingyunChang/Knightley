@@ -49,7 +49,7 @@ router.post('/creating', (req, res, next) => {
 				res.send('Sorry, username is taken');
 				res.end();
 			} else {
-				mysqlDb.insert(username, password, profession);				
+				mysqlDb.insertIntoDatabse(username, password, profession);				
 				res.cookie('name', username);
 				console.log("======Cookie======");
 				console.log(req.cookies.name)

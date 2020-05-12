@@ -12,22 +12,18 @@ function query(queryText, params, callback) {
 }
 
 module.exports = {
-	query: (queryText,params,callback)=>{
+	query: (queryText,params,callback) => {
 		return pool.query(queryText, params, callback);
 	},
-	insert: (username, password, profession) => {
+	insertIntoDatabse: (username, password, profession) => {
 		return query('INSERT INTO users (username, password, profession) VALUES (?,?,?) ', 
 		[username, password, profession],
 		(error, results, fields) => {
 			 });
+	},
+	deleteUser : (username) => {
+		return query('DELETE FROM users WHERE username = ?', username, (error, results, fields) => {
+		});
 	}
 }
 
-
-
-
-// // Sanity Check
-// pool.query('SELECT 1+1 AS solution', function(error, results, fields){
-// 	if (error) throw error;
-// 	console.log('The solution is: ', results[0].solution);
-// })

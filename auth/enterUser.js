@@ -6,7 +6,7 @@ module.exports = (profile, cb) => {
         var password = profile.provider;
         var profession = "null";
 
-        mysqlDb.insert(username, password, profession);
+        mysqlDb.insertIntoDatabse(username, password, profession);
 
         cb(null, profile);
         return profile;
