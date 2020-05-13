@@ -7,7 +7,7 @@ describe('Unit testing the index route', function() {
     describe("User Login", function() {
       it('home page should return OK status', function() {
         return request(app)
-          .get('/'
+          .get('/')
           .then(function(response) {
               assert.equal(response.status, 200)
           })
@@ -40,3 +40,7 @@ describe('Unit testing the index route', function() {
         .get('/failure')
         .then(function(response) {
             expect(response.text).to.contain('Failure Page');
+        })
+    });
+
+});
