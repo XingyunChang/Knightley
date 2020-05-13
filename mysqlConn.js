@@ -22,7 +22,20 @@ module.exports = {
 			 });
 	},
 	deleteUser : (username) => {
-		return query('DELETE FROM users WHERE username = ?', username, (error, results, fields) => {
+		return query('DELETE FROM users WHERE username = ?', 
+		username, 
+		(error, results, fields) => {
+		});
+	},
+	changePassword : (id, password) => {
+		return query('UPDATE users SET password = ? WHERE id = ?',
+		[password, id], (error, results, fields) => {
+		});
+	},
+	changeProfession : (id, profession) => {
+		return query('UPDATE users SET profession = ? WHERE id = ?',
+		[profession, id],
+		(error, results, fields) => {
 		});
 	}
 }

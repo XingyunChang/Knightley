@@ -2,13 +2,13 @@ var express = require('express');
 var passportLinkedin = require('../auth/linkedin');
 var passportGoogle = require('../auth/google');
 var passportFacebook = require('../auth/facebook');
+var passportInstagram = require("../auth/instagram")
 var router = express.Router();
 
 const mysqlDb = require('./../mysqlConn')
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-	// console.log(mysqlDb.query('SELECT * FROM templates'))
 	res.render('login', {title:''});
 });
 
@@ -82,10 +82,14 @@ router.get('/select/:id', (req, res, next) => {
 // Router for Debug Only
 router.get('/checking', (req, res, next) => {
 	mysqlDb.query('SELECT * FROM users', (error, results, fields) => {
-		console.log(results);
 		res.send(results);
 	})
 
+});
+
+//test failure page. Delete in production
+router.get('/failure', (req, res, next) => {
+	res.json('Failure Page');
 });
 
 // The request will be redirected to LinkedIn for authentication, so this
@@ -101,16 +105,12 @@ router.get('/auth/linkedin/callback',
 			res.redirect('/account');
 		});
 
-//test failure page
-router.get('/failure', (req, res, next) => {
-	res.json('Failure Page');
-});
 
-//	 Request directed to google for authentication. 
+//Request directed to google for authentication. 
 router.get('/auth/google', passportGoogle.authenticate('google', { scope: ['profile'] }));
 
-//	Controls redirect after authentication. Succesfull requests go to account page
-//	unsuccessful requests go to login page
+//Controls redirect after authentication. Succesfull requests go to account page
+//unsuccessful requests go to login page
 router.get('/auth/google/callback', 
 	passportGoogle.authenticate('google', { failureRedirect: '/failure' }),
 		(req, res) => {
@@ -120,10 +120,18 @@ router.get('/auth/google/callback',
 router.get('/auth/facebook', passportFacebook.authenticate('facebook'));
 
 router.get('/auth/facebook/callback', 
-	passportFacebook.authenticate('facebook', { failureRedirect: '/' }),
+	passportFacebook.authenticate('facebook', { failureRedirect: '/failure' }),
 		(req, res) => {
 			res.redirect('/account');
 		});
 
+// router.get('/auth/instagram',
+// passportInstagram.authenticate('instagram'));
+
+// router.get('/auth/instagram/callback', 
+// passportInstagram.authenticate('instagram', { failureRedirect: '/failure' }),
+//   (req, res) => {
+//     res.redirect('/account');
+//   });
 
 module.exports = router;
