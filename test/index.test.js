@@ -80,7 +80,7 @@ describe('Testing the index route', function() {
       
     })
 
-    describe("Testing Routes", function() {
+    describe("Testing Routes #route", function() {
 
       //unit test
       it('failure page should return OK status', function()  {
@@ -99,6 +99,15 @@ describe('Testing the index route', function() {
               expect(response.text).to.contain('Failure Page');
           })
       });
+
+      it('should render logged in user account', function() {
+        return request(app)
+        .get('/account')
+        .then(function(response) {
+          expect(response.text).to.contain("");
+          console.log(response.text);
+        })
+      })
     })
 
 });
