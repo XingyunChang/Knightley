@@ -45,10 +45,10 @@ describe('Testing the index route', function() {
         })
         .then(function(response) {
           expect(response.text).to.contain('Incorrect Username and/or Password!');
-          //console.log(response)
         })
       });
 
+      //unit test
       it('empty username, password, or profession should be rejected', function() {
         return request(app)
         .post('/creating')
@@ -63,6 +63,7 @@ describe('Testing the index route', function() {
         })
       });
 
+      //unit test
       it('password and username below length 5 should be rejected', function() {
         return request(app)
         .post('/creating')
@@ -77,16 +78,11 @@ describe('Testing the index route', function() {
         })
       });
       
-
-
-      //Create account(Unit)
-        //Entering username + password is valid 
-        //Not entering username + password is invalid
-
-
     })
 
     describe("Testing Routes", function() {
+
+      //unit test
       it('failure page should return OK status', function()  {
         return request(app)
           .get('/failure')
@@ -95,6 +91,7 @@ describe('Testing the index route', function() {
           })
       });
   
+      //unit test
       it('failure page should return message on rendering', function() {
         return request(app)
           .get('/failure')
@@ -103,18 +100,10 @@ describe('Testing the index route', function() {
           })
       });
     })
-    
-
 
 });
 
-      //Create(unit)
-        //Username + passwords of length 5 and below should return "Min length of username
-          // + password is 5 characters"
-        //
-
       //Create(integration)
-        //if username entered in already in database, message 'Sorry, username is taken' should appear
         //if unique username entered in, check databse for proper username, password, and profession
       
       //User Authentication login(integration)
