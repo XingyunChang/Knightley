@@ -24,7 +24,6 @@ router.post('/auth', (req, res , next) => {
 		} else {
 			res.render('login', {title:'Incorrect Username and/or Password!'});
 		}		
-		console.log('success')
 	});
 })
 
@@ -38,24 +37,27 @@ router.post('/creating', (req, res, next) => {
 		var username = req.body.username;
 		var password = req.body.password;
 		var profession = req.body.profession;
-		
-		console.log(username);
-		console.log(password);
-		
-		mysqlDb.query('SELECT * FROM users WHERE username = ?',
-		 [username],
-		 (error, results, fields) => {
-			if (results.length > 0) {
-				res.send('Sorry, username is taken');
-				res.end();
-			} else {
-				mysqlDb.insertIntoDatabse(username, password, profession);				
-				res.cookie('name', username);
-				console.log("======Cookie======");
-				console.log(req.cookies.name)
-				res.redirect('/select');
-			}
-		});
+
+		if (isvalidEntry(username, password)) {
+			mysqlDb.query('SELECT * FROM users WHERE username = ?',
+			[username],
+			(error, results, fields) => {
+				if (results.length > 0) {
+					userNameMessage = "Sorry, username is already in use. Choose another";
+					res.render('create_account', {message: userNameMessage})
+					//res.end();
+				} else {
+					mysqlDb.insertIntoDatabse(username, password, profession);				
+					res.cookie('name', username);
+					console.log("======Cookie======");
+					console.log(req.cookies.name)
+					res.redirect('/select');
+				}
+			});
+		} else {
+			errorMessage = "Username and password must be greater than 5 characters";
+			res.render("create_account", {message : errorMessage});
+		}
 	
 	});
 
@@ -134,4 +136,11 @@ router.get('/auth/facebook/callback',
 //     res.redirect('/account');
 //   });
 
+function isvalidEntry(username, password) {
+	var valid = true;
+	if (username.length < 5 || password.length < 5) {
+		valid = false;
+	}
+	return valid
+}
 module.exports = router;
