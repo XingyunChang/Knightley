@@ -59,9 +59,6 @@ router.post('/creating', (req, res, next) => {
 	
 	});
 
-router.get('/confirm', (req, res, next) => {
-	res.render('index', {title: req.cookies.name});
-});
 
 router.get('/select', (req, res, next) => {
 	var username = req.body.username;
