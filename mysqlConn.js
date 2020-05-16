@@ -37,6 +37,12 @@ module.exports = {
 		[profession, id],
 		(error, results, fields) => {
 		});
+	},
+	searchForUserName : (username) => {
+		return query('SELECT * FROM users WHERE username = ?',
+			[username],
+			(error, results, fields) => {
+				console.log(results) 
+			});
 	}
 }
-

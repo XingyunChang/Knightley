@@ -49,8 +49,6 @@ router.post('/creating', (req, res, next) => {
 				} else {
 					mysqlDb.insertIntoDatabse(username, password, profession);				
 					res.cookie('name', username);
-					console.log("======Cookie======");
-					console.log(req.cookies.name)
 					res.redirect('/select');
 				}
 			});
@@ -81,13 +79,13 @@ router.get('/select/:id', (req, res, next) => {
 	
 })
 
-// Router for Debug Only
-router.get('/checking', (req, res, next) => {
-	mysqlDb.query('SELECT * FROM users', (error, results, fields) => {
-		res.send(results);
-	})
+// // Router for Debug Only
+// router.get('/checking', (req, res, next) => {
+// 	mysqlDb.query('SELECT * FROM users', (error, results, fields) => {
+// 		res.send(results);
+// 	})
 
-});
+// });
 
 //test failure page. Delete in production
 router.get('/failure', (req, res, next) => {

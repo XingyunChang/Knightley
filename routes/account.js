@@ -6,6 +6,7 @@ const mysqlDb = require('./../mysqlConn');
 router.get('/', ensureAuthenticated, (req, res) => {
     var username = req.user.displayName;
     var password = req.user.provider;
+    res.cookie('name', req.user.displayName);
 
     mysqlDb.query('SELECT * FROM users WHERE username = ? and password = ?',
      [username, password],

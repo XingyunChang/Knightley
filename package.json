@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "mocha --R=nyan --exit",
-    "coverage" : "nyc --reporter=text mocha --exit"
+    "coverage": "nyc --reporter=text mocha --exit",
+    "unit": "mocha -g unit",
+    "integration": "mocha -g integration"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

@@ -12,5 +12,11 @@ start development server
 ## npm test 
 runs all test cases in /test
 
-## npm run-script coverage 
+## npm run coverage 
 runs all test cases in /test and includes coverage report
+
+## npm run unit
+runs unit tests in /test
+
+## npm run integration 
+runs integration tests in /test
